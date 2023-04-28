@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<title>Iconfu SVG Demo</title>
+		<link rel="stylesheet" type="text/css" href="_demo/colorpicker.css" />
+		<script src="_demo/colorpicker.js"></script>
+		<style>
+			html, body {
+				height: 100%;
+			}
+			body {
+				display: flex;
+				flex-direction: column;
+				margin: 0;
+				user-select: none;
+			}
+			body, input, button {
+				color: #222;
+				font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+				font-size: 16px;
+				font-weight: 400;
+				letter-spacing: .01em;
+				line-height: 1.6;
+			}
+			h1, h2 {
+				margin: 0;
+				color: #fff;
+				font-weight: 400;
+			}
+			h1 {
+				padding: 20px 32px;
+				font-size: 28px;
+				background: #00bcd4;
+			}
+			h2 {
+				padding: 8px 32px;
+				font-size: 24px;
+				background: #4dd0e1;
+			}
+			a {
+				color: inherit;
+			}
+			button {
+				margin: 12px 24px;
+				padding: 10px 20px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				background: #fff;
+				cursor: pointer;
+			}
+			button:active {
+				background: #eee;
+			}
+			button:focus {
+				outline: 0;
+			}
+			.icons-table {
+				flex: 1 0 auto;
+				display: flex;
+				flex-flow: row wrap;
+				justify-content: space-between;
+			}
+			.icon-element {
+				width: 200px;
+				margin: 20px;
+				text-align: center;
+			}
+			.icon-dummy {
+				height: 0;
+				margin: 0;
+			}
+			.icon-index {
+				font-size: 12px;
+				font-weight: 400;
+				color: #888;
+			}
+			.icon-name {
+				font-size: 16px;
+				font-weight: 400;
+				color: #888;
+				user-select: text;
+				overflow-wrap: break-word;
+			}
+			.svg-icon-128 > * {
+				margin: 10px 0;
+				width: 128px;
+				height: 128px;
+			}
+			.color-preview {
+				display: inline-block;
+				width: 26px;
+				height: 26px;
+				margin: 0 8px;
+				border-radius: 50%;
+				border: 1.5px solid rgba(0, 0, 0, 0.1);
+				cursor: pointer;
+			}
+			code, .css-code {
+				font-family: Roboto Mono, Helvetica Monospaced, monospace;
+				font-weight: 600;
+			}
+			.css-code {
+				flex: 0 0 auto;
+				align-self: flex-start;
+				display: inline-block;
+				margin: 32px 48px;
+				font-size: 20px;
+				color: #888;
+			}
+			.css-color-preview {
+				margin: 0 2px;
+				vertical-align: middle;
+			}
+			.css-code input {
+				outline: none;
+				width: 10ch;
+				text-align: center;
+				border-width: 0 0 2px;
+				border-style: solid;
+				border-color: #a0a0a0;
+				font-family: inherit;
+				font-size: inherit;
+				font-weight: inherit;
+				color: inherit;
+			}
+			.css-code input:focus {
+				border-color: #444;
+			}
+			.css-button {
+				margin: 24px 4px 0;
+			}
+			.css-notes {
+				margin: 0 0 16px 48px;
+				color: #888;
+			}
+			.footer {
+				text-align: center;
+				padding: 8px 0;
+				font-size: 14px;
+				color: #ffffff;
+				background: #a0a0a0;
+			}
+		</style>
+		<script>
+			function colorValueToHex(colorValue, accept3Hex) {
+			  colorValue = colorValue.toLowerCase();
+			  var hex = '';
+			  var rgbMatch = colorValue.match(/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3}).*\)/);
+			  if (rgbMatch) {
+			    for (var i = 0; i < 3; i++) {
+			      hex += ('0' + Number(rgbMatch[i + 1]).toString(16)).substr(-2);
+			    }
+			  } else {
+			    var hexMatch = colorValue.match(/[0-9a-f]{6}/);
+			    if (hexMatch) {
+			      hex = hexMatch[0];
+			    } else if (accept3Hex) {
+			      hexMatch = colorValue.match(/([0-9a-f])([0-9a-f])([0-9a-f])/);
+			      if (hexMatch) {
+			        for (var i = 0; i < 3; i++) {
+			          hex += hexMatch[i + 1] + hexMatch[i + 1];
+			        }
+			      }
+			    }
+			  }
+			  return hex == '' ? null : '#' + hex;
+			};
+			
+			function getBackgroundHex(element) {
+			  var background = window.getComputedStyle(element, null).getPropertyValue('background-color');
+			  return colorValueToHex(background);
+			}
+			
+			function showBgColpick(e) {
+			  var iconsElem = document.getElementsByClassName('icons-table')[0];
+			  Colorpicker.show(e, function(hexColor, element) {
+			    e.style.background = iconsElem.style.background = hexColor;
+			  }, getBackgroundHex(e));
+			}
+			
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1>Iconfu SVG Demo</h1>
+		</header>
+		<h2>1 Icons</h2>
+		<div style="flex: 0 0 auto; display: flex; justify-content: flex-end; align-items: center; margin: 12px 0;">
+			<span>Background Color</span>
+			<span class="color-preview" style="background: #ffffff" onclick="showBgColpick(this)"></span>
+		</div>
+		<div class="icons-table" style="background: #ffffff;">
+			<div class="icon-element">
+				<div class="icon-index">#0</div>
+				<div class="svg-icon-128">
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,1024,1024">
+						<desc>cake icon - Licensed under Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0) - Created with Iconfu.com - Derivative work of Material icons (Copyright Google Inc.)</desc>
+						<g fill="none" fill-rule="nonzero" style="mix-blend-mode: normal">
+							<path d="M910.98,512.17v57.66c0,23.43 -5.99,45.47 -16.52,64.69c10.68,11.24 16.89,26.32 16.89,42.32v173.09c0,54.59 -44.4,98.99 -98.99,98.99h-600.74c-54.59,0 -98.99,-44.4 -98.99,-98.99v-173.09c0,-15.88 6.12,-30.85 16.66,-42.07c-10.61,-19.28 -16.66,-41.41 -16.66,-64.94v-57.82c0,-96.26 77.82,-174.08 174.08,-174.08h126.29v-13.65c0,-5.7 0.78,-11.21 2.23,-16.45c-24.56,-24.71 -39.77,-58.72 -39.77,-96.19c0,-24.79 6.47,-48.98 19.63,-70.28l63.66,-110.56c10.97,-19.05 31.27,-30.78 53.25,-30.78c21.98,0 42.28,11.74 53.25,30.78l63.66,110.56c13.16,21.3 19.63,45.49 19.63,70.28c0,37.46 -15.14,71.55 -39.74,96.3c1.43,5.2 2.2,10.68 2.2,16.34v13.65h126.29c96.12,0 174.18,77.71 173.7,174.25z" fill="#000000"/>
+							<g fill="#ffffff">
+								<path d="M849.54,512v57.82c0,40.55 -33.04,73.59 -73.59,73.59c-19.53,0 -37.92,-7.51 -51.81,-21.4l-79.97,-79.97l-80.35,79.97c-27.78,27.78 -76.23,27.78 -104.01,0l-79.97,-79.97l-80.34,79.97c-13.52,13.9 -32.29,21.4 -51.81,21.4c-40.55,0 -73.59,-33.04 -73.59,-73.59v-57.82c0,-62.33 50.31,-112.64 112.64,-112.64h187.73v-75.09h75.1v75.09h187.73c62.33,0 112.64,50.31 112.26,112.64zM776.33,699.73c27.41,0 52.57,-8.63 73.59,-22.9v173.09c0,20.65 -16.9,37.55 -37.55,37.55h-600.74c-20.65,0 -37.55,-16.9 -37.55,-37.55v-173.09c21.02,14.26 46.18,22.9 73.59,22.9c34.54,0 67.21,-13.52 91.61,-37.92l40.93,-40.17l40.17,40.17c49.18,49.18 134.79,48.81 183.6,0l40.55,-40.17l40.18,40.17c24.4,24.4 57.07,37.92 91.61,37.92zM436.91,211.63c0,-14.26 3.75,-27.41 10.89,-38.68l64.2,-111.51l64.2,111.51c7.14,11.26 10.89,24.41 10.89,38.68c0,41.3 -33.41,75.09 -75.09,75.09c-41.3,0 -75.09,-33.79 -75.09,-75.09z"/>
+							</g>
+						</g>
+					</svg>
+				</div>
+				<div class="icon-name">cake</div>
+			</div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+			<div class="icon-element icon-dummy"></div>
+		</div>
+		<footer>
+			<div class="footer">Created with <a href="https://www.iconfu.com">Iconfu.com</a> 27-APR-2023, 9:17:58 PM</div>
+		</footer>
+	</body>
+</html>
